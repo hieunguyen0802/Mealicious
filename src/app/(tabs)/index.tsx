@@ -1,50 +1,21 @@
-import Colors from '@/src/constants/Colors';
-import { StyleSheet, Text, View, Image, ScrollView} from 'react-native';
-import products from '@/assets/data/products';
 
-const ProductListItem = ({product}) => {
-  
-  return (
-    <View style={styles.container}>
-    <Image source = {{uri: product.image}} style={styles.image}/>
-    <Text style={styles.title}>{product.name}</Text>
-    <Text style={styles.title}>{product.price}</Text>
-  </View>
-  )
-}
+import { StyleSheet, Text, View, Image, ScrollView, FlatList} from 'react-native';
+
+import products from '@/assets/data/products';
+import ProductListItem from '@/src/components/ProductListItem';
+
+
 
 export default function MenuScreen() {
   return (
-   <ScrollView>
-    <ProductListItem product={products[0]}/>
-    <ProductListItem  product={products[1]}/>
-   </ScrollView>
+   <View>
+    <FlatList 
+      data = {products}
+      renderItem = {({item}) =>  <ProductListItem product = {item} /> }
+      numColumns={2}
+      contentContainerStyle= {{gap: 10}}
+      columnWrapperStyle={{gap: 10, padding: 10}}
+    />
+   </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 20,
-    borderColor: 'red',
-    borderWidth: 1
-
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginVertical: 10
-  },
-
-  price: {
-    color: Colors.light.tint,
-    fontWeight: "bold"
-  },
-
-  image : {
-    width: '100%',
-    aspectRatio: 1
-  }
-  
-});
