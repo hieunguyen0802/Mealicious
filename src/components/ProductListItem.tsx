@@ -12,12 +12,12 @@ const defaultPizzaImage =
 
 const ProductListItem = ({ product }: ProductListItemProps) => {
   return (
-    <Link href={`/${product.id}`} asChild>
+    <Link href={`/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         <Image
           source={{ uri: product.image || defaultPizzaImage }}
           style={styles.image}
-          resizeMode="contain"
+          resizeMode="contain" 
         />
         <Text style={styles.title}>{product.name}</Text>
         <Text style={styles.title}>{product.price}</Text>
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     flex: 1,
+    maxWidth: "50%",
   },
 
   title: {
@@ -52,3 +53,4 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
 });
+ 
