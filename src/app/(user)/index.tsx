@@ -5,7 +5,7 @@ import { Redirect } from 'expo-router'
 const TabIndex =  () => {
   return (
     <View>
-      <Redirect href={'/menu'} />
+      <Redirect href={'/(user)/menu'} />
     </View>
   )
 }

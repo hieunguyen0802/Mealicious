@@ -13,15 +13,15 @@ export default function ProductStack() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Menu',
+          title: "Menu",
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/(admin)/menu/create" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
-                    name="info-circle"
+                    name="plus-square-o"
                     size={25}
-                    color={Colors[colorScheme ?? "light"].text}
+                    color={Colors.light.tint}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
@@ -30,7 +30,6 @@ export default function ProductStack() {
           ),
         }}
       />
-     
     </Stack>
   );
 }

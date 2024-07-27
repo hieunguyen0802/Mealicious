@@ -4,11 +4,19 @@ import { useLocalSearchParams } from "expo-router";
 import { Stack } from "expo-router";
 import Button from '@components/Button'
 import products from "@/assets/data/products";
+import { useCart } from "@/src/providers/CartProvider"; 
+import { PizzaSize } from "@/src/types";
+import { router } from "expo-router";
 
-const productDetails = () => {
 
-  const [selectedSize, setSelectSize] = useState('');
-  const sizes = ["S", "M", "L", "XL"];
+const ProductDetails = () => {
+
+  const {onAddItem} = useCart()
+
+  const [selectedSize, setSelectSize] = useState<PizzaSize>("");
+  
+  const sizes:PizzaSize[] = ["S", "M", "L", "XL"];
+
 
   const defaultPizzaImage =
     "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/peperoni.png";
@@ -17,7 +25,11 @@ const productDetails = () => {
   const currentProduct = products.find((item) => item.id.toString() === id);
 
   const addToCart = () => {
-    console.warn("Adding", selectedSize)
+    if (!currentProduct) return;
+
+    onAddItem(currentProduct, selectedSize)
+    router.push("/cart")
+
   }
 
   if (!currentProduct) return <Text>Product not found </Text>;
@@ -40,12 +52,12 @@ const productDetails = () => {
       </View>
 
       <Text style={styles.price}>${currentProduct.price} </Text>
-      <Button text="Add to card" onPress={addToCart} />
+      <Button text="Add to card" onPress={addToCart} disabled={selectedSize === ""} />
     </View>
   );
 };
 
-export default productDetails;
+export default ProductDetails;
 
 const styles = StyleSheet.create({
   container: {
