@@ -1,13 +1,18 @@
-import { StyleSheet, Text, View, TextInput, Image } from "react-native";
+import { StyleSheet, Text, View, TextInput, Image, Alert } from "react-native";
 import React, { useState } from "react";
-import Button from "@/src/components/Button";
-import {defaultPizzaImage} from '@components/ProductListItem'
+import Button, {ButtonSecondary} from "@/src/components/Button";
+import { defaultPizzaImage } from "@components/ProductListItem";
 import Colors from "@/src/constants/Colors";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
+import { Stack, useLocalSearchParams } from "expo-router";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+
+  const {id} = useLocalSearchParams();
+
+  const isUpdated = !!id
 
   const [productImage, setProductImage] = useState<string | null>(null);
 
@@ -27,45 +32,81 @@ const CreateProduct = () => {
     }
   };
 
-
-
   const resetFields = () => {
-    setName('')
-    setPrice('')
+    setName("");
+    setPrice("");
+  };
+
+
+  const onSubmit = () => {
+    if(isUpdated) onUpdate()
+    onCreate()
+
   }
 
-
   const onCreate = () => {
-    console.warn(price, name)
-    resetFields()
+    console.warn(price, name);
+    resetFields();
+  };
 
+  const onUpdate = () => {
+    console.warn("updated",price, name);
+    resetFields();
+  };
+
+  const onDelete = () => {
+    console.warn("deleted !!!!!!!!")
+  }
+
+  const handleDelete = () => {
+    Alert.alert('Hang on', 'Are you sure want to delete this product ?', [
+      {
+        text: 'Cancel'
+      },
+      { 
+        text: 'Delete',
+        style: 'destructive',
+        onPress: onDelete
+      }
+    ])
   }
 
 
   return (
     <View style={styles.container}>
-
-      <Image source={{uri: productImage || defaultPizzaImage}} style={styles.image}  /> 
-      <Text onPress={pickImage} style={styles.imageText} > Select Image</Text>
-
-      <Text style={styles.label}> Product name</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="product name"
-        value={name}
-        onChangeText={setName}
+      <Stack.Screen
+        options={{
+          title: isUpdated ? "Update Product" : "Create Product",
+        }}
       />
+        <Image
+          source={{ uri: productImage || defaultPizzaImage }}
+          style={styles.image}
+        />
+        <Text onPress={pickImage} style={styles.imageText}>
+          {" "}
+          Select Image
+        </Text>
 
-      <Text style={styles.label}> Price ($)</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="9.99"
-        keyboardType="numeric"
-        value={price}
-        onChangeText={setPrice}
-      />
+        <Text style={styles.label}> Product name</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="product name"
+          value={name}
+          onChangeText={setName}
+        />
 
-      <Button text="Create" onPress={onCreate} />
+        <Text style={styles.label}> Price ($)</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="9.99"
+          keyboardType="numeric"
+          value={price}
+          onChangeText={setPrice}
+        />
+
+        <Button text= {isUpdated ? "Update" : "Create"} onPress={onSubmit} />
+        {isUpdated &&  <ButtonSecondary text="Delete" onPress={handleDelete}/>}
     </View>
   );
 };
@@ -78,12 +119,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
   },
-   
-  image: {
-    width: '50%',
-    aspectRatio: 1,
-    alignSelf: 'center'
 
+  image: {
+    width: "50%",
+    aspectRatio: 1,
+    alignSelf: "center",
   },
 
   label: {
@@ -100,10 +140,20 @@ const styles = StyleSheet.create({
   },
 
   imageText: {
+    alignSelf: "center",
+    fontWeight: "bold",
+    color: Colors.light.tint,
+    marginVertical: 10,
+  },
+
+  deleteButton: {
     alignSelf: 'center',
     fontWeight: 'bold',
     color: Colors.light.tint,
-    marginVertical: 10
-  }
-
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: "white",
+    backgroundColor: "white",
+    
+  },
 });

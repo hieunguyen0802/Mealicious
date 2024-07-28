@@ -41,7 +41,7 @@ const ProductDetails = () => {
       <Stack.Screen options={{ 
         title: currentProduct?.name,
         headerRight: () => (
-          <Link href="/" asChild>
+          <Link href={`/(admin)/menu/create?id=${id}`} asChild>
             <Pressable>
               {({ pressed }) => (
                 <FontAwesome
@@ -61,10 +61,9 @@ const ProductDetails = () => {
         source={{ uri: currentProduct.image || defaultPizzaImage }}
         style={styles.image}
       />
-      <Text style={styles.price}> {currentProduct.name} </Text>
-      <Text style={styles.price}> {currentProduct.price} </Text>
+      <Text style={styles.price}> Product name: {currentProduct.name} </Text>
+      <Text style={styles.price}> Price: {currentProduct.price} </Text>
 
-      <Button text="Save changes" onPress={() => console.log("first")}/>
     </View>
   );
 };
